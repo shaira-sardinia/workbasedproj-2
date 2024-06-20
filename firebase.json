@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "public": "integrated-training-soln/dist",
     "public": "public",
     "ignore": [
       "firebase.json",
