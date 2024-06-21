@@ -1,6 +1,6 @@
 'use strict';
 
-import { } from './index.js';
+import { registerUser } from './index.js';
 
 function counter() {
   let seconds = 0;
@@ -11,3 +11,17 @@ function counter() {
 }
 
 counter();
+
+document.getElementById('authForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  
+  try {
+    const user = await registerUser(email, password);
+    console.log('Registration successful:', user);
+  } catch (error) {
+    console.error('Error during registration:', error);
+  }
+});
