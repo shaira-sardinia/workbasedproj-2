@@ -2,26 +2,22 @@
 
 import { registerUser } from "./index.js";
 
-function counter() {
-  let seconds = 0;
-  setInterval(() => {
-    seconds += 1;
-    document.getElementById("app").innerHTML = `<p>You have been here for ${seconds} seconds.</p>`;
-  }, 1000);
-}
-
-counter();
-
 document.getElementById("authForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
+  const errorMessageDiv = document.getElementById("errorMessage");
 
+  errorMessageDiv.textContent = "";
+
+  /* If user is successful, page redirects to Dashboard, otherwise, display error message in DOM */
   try {
     const user = await registerUser(email, password);
     console.log("Registration successful:", user);
+    window.location.href = "dashboard.html";
   } catch (error) {
-    console.error("Error during registration:", error);
+    console.error("Error during logging in:", error);
+    errorMessageDiv.textContent = error;
   }
 });

@@ -51,7 +51,7 @@ export function registerUser(email, password) {
       const errorCode = error.code;
       const errorMessage = error.message;
       console.error("Registration error:", errorCode, errorMessage);
-      return null;
+      throw errorMessage;
     });
 }
 
