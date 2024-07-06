@@ -31,45 +31,55 @@ document.addEventListener("DOMContentLoaded", function () {
       errorMessageDiv.textContent = error; // Display error message
     }
   });
+
+  loadFooter();
+  loadNavbar();
+  fetchUsername();
 });
 
 /* Loading footer content */
-function loadFooter() {
-  const footerContainer = document.getElementById("footer");
-  if (footerContainer) {
-    fetch("./util/footer.html")
-      .then((response) => response.text())
-      .then((data) => {
-        footerContainer.innerHTML = data;
-      })
-      .catch((error) => {
-        console.error("Error fetching footer:", error);
-      });
-  } else {
-    console.error("Footer container not found.");
-  }
+// function loadFooter() {
+//   const footerContainer = document.getElementById("footer");
+//   if (footerContainer) {
+//     console.log("Footer container found:", footerContainer);
 
-  console.log("Footer Container:", footerContainer);
-}
+//     fetch("../util/footer.html")
+//       .then((response) => {
+//         if (!response.ok) {
+//           throw new Error(`HTTP error! Status: ${response.status}`);
+//         }
+//         return response.text();
+//       })
+//       .then((data) => {
+//         footerContainer.innerHTML = data;
+//         console.log("Footer content loaded successfully");
+//       })
+//       .catch((error) => {
+//         console.error("Error fetching footer:", error);
+//       });
+//   } else {
+//     console.error("Footer container not found.");
+//   }
+// }
 
 /* Loading navbar content */
-function loadNavbar() {
-  const navbarContainer = document.getElementById("navbar");
-  if (navbarContainer) {
-    fetch("./util/navbar.html")
-      .then((response) => response.text())
-      .then((data) => {
-        navbarContainer.innerHTML = data;
-      })
-      .catch((error) => {
-        console.error("Error fetching navbar:", error);
-      });
-  } else {
-    console.error("Navbar container not found.");
-  }
+// function loadNavbar() {
+//   const navbarContainer = document.getElementById("navbar");
+//   if (navbarContainer) {
+//     fetch("../util/navbar.html")
+//       .then((response) => response.text())
+//       .then((data) => {
+//         navbarContainer.innerHTML = data;
+//       })
+//       .catch((error) => {
+//         console.error("Error fetching navbar:", error);
+//       });
+//   } else {
+//     console.error("Navbar container not found.");
+//   }
 
-  console.log("Navbar Container:", navbarContainer);
-}
+//   console.log("Navbar Container:", navbarContainer);
+// }
 
 /* Fetching and displaying username on navbar */
 function fetchUsername() {
@@ -81,10 +91,3 @@ function fetchUsername() {
     usernameElement.textContent = username;
   }
 }
-
-/* Executing functions on DOM content loaded */
-document.addEventListener("DOMContentLoaded", function () {
-  loadFooter();
-  loadNavbar();
-  fetchUsername();
-});

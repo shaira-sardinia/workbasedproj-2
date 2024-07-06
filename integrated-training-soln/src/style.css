@@ -142,25 +142,45 @@ progress {
   width: 100px;
   font-weight: 400;
   color: #ffffff;
-  background-color: #6f42c1;
+  background-color: #8a38f5;
 }
 
 .btn.custom-btn:hover {
   color: #ffffff; /* White text color on hover */
-  background-color: #7a4db6;
-  border-color: #7a4db6;
+  background-color: #8a38f5;
+  border-color: #8a38f5;
 }
 
-.btn.custom-btn:focus,
-.btn.custom-btn.focus {
+.btn.custom-btn:focus {
   box-shadow: 0 0 0 0.25rem rgba(123, 66, 193, 0.5);
 }
 
-.btn.custom-btn.active,
-.btn.custom-btn:active {
+.btn.custom-btn.active {
   color: #ffffff;
-  background-color: #5f347c;
-  border-color: #5f347c;
+  background-color: #8a38f5;
+  border-color: #8a38f5;
+}
+
+a {
+  color: #8a38f5;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.header-text {
+  font-size: 48px;
+  font-weight: 400;
+  color: #8a38f5;
+  padding-bottom: 12px;
+}
+
+.sub-text {
+  font-size: 18px;
+  font-weight: 500;
+  padding-top: 6px;
 }
 
 /* Log in page styling */
@@ -171,4 +191,55 @@ progress {
 
 .error {
   font-style: italic;
+}
+
+/* About page styling */
+.about-page-header {
+  display: flex;
+  justify-content: flex-end;
+  margin: 15px;
+  padding-right: 16px;
+}
+
+.about-page {
+  margin: 15vh;
+  padding-left: 10vh;
+  padding-right: 10vh;
+}
+
+.about-page-image {
+  max-height: 60vh;
+  padding-left: 5vh;
+  padding-bottom: 5vh;
+}
+
+/* Footer styling */
+.footer {
+  display: flex;
+  background-color: #8a38f5;
+  color: #ffffff;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+.footer-logo {
+  padding: 30px;
+  max-height: 30vh;
+}
+
+.footer-links {
+  list-style: none;
+  margin-left: 6rem;
+  padding: 2rem;
+}
+
+.footer-links li a {
+  color: #ffffff;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  padding-bottom: 8px;
 }
