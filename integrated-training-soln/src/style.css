@@ -138,6 +138,30 @@ progress {
 }
 
 /* Standard styling */
+
+.btn.login-btn {
+  width: 8vw;
+  font-size: 14px;
+  font-weight: 400;
+  color: #ffffff;
+  background-color: #8a38f5;
+}
+
+.btn.login-btn:hover {
+  background-color: #8a38f5;
+  border-color: #8a38f559;
+}
+
+.btn.login-btn:focus {
+  box-shadow: 0 0 0 0.25rem #8a38f576;
+  text-decoration: none;
+}
+
+.btn.login-btn.active {
+  background-color: #8a38f5;
+  border-color: #8a38f54d;
+}
+
 .btn.custom-btn {
   font-size: 14px;
   font-weight: 400;
@@ -272,18 +296,49 @@ a:hover {
   padding-right: 10vh;
 }
 
-.top-section {
-  display: flex;
-}
-
 .progress-bar {
   padding-right: 10vh;
 }
 
-.courses-section {
-  display: flex;
-  padding-bottom: 20vh;
+.single-course {
 }
 
-.single-course {
+.courses-section {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 2vh 2vh;
+  box-sizing: border-box;
+}
+
+.courses-section > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Catalog styling */
+.catalog {
+  margin: 10vh;
+  padding-left: 10vh;
+  padding-right: 10vh;
+}
+
+.search-bar {
+  display: flex;
+  padding: 3vh 10vh;
+}
+
+.catalog-section {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 5vh 2vh;
+  border: 1px solid #80808073;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.catalog-section > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
