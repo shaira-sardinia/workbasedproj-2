@@ -139,7 +139,7 @@ progress {
 
 /* Standard styling */
 
-.btn.login-btn {
+.btn.main-btn {
   width: 8vw;
   font-size: 14px;
   font-weight: 400;
@@ -147,17 +147,17 @@ progress {
   background-color: #8a38f5;
 }
 
-.btn.login-btn:hover {
+.btn.main-btn:hover {
   background-color: #8a38f5;
   border-color: #8a38f559;
 }
 
-.btn.login-btn:focus {
+.btn.main-btn:focus {
   box-shadow: 0 0 0 0.25rem #8a38f576;
   text-decoration: none;
 }
 
-.btn.login-btn.active {
+.btn.main-btn.active {
   background-color: #8a38f5;
   border-color: #8a38f54d;
 }
@@ -341,4 +341,15 @@ a:hover {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+/* Course Description styling */
+.course-description {
+  margin: 10vh;
+  padding-left: 10vh;
+  padding-right: 10vh;
+}
+
+.desc-page-image {
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
 }

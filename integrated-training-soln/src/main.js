@@ -30,56 +30,26 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("Error during logging in:", error);
       errorMessageDiv.textContent = error; // Display error message
     }
-  });
 
-  loadFooter();
-  loadNavbar();
+    // Redirecting to pages
+    if (window.location.pathname.endsWith("dashboard.html")) {
+      loadUserCourses();
+    }
+
+    if (window.location.pathname.endsWith("catalog.html")) {
+      loadCourseCatalog();
+    }
+
+    if (window.location.pathname.endsWith("description.html")) {
+      loadCourseDescription();
+      const searchBar = document.getElementById("search-bar");
+      if (searchBar) {
+        searchBar.addEventListener("input", filterCourses);
+      }
+    }
+  });
   fetchUsername();
 });
-
-/* Loading footer content */
-// function loadFooter() {
-//   const footerContainer = document.getElementById("footer");
-//   if (footerContainer) {
-//     console.log("Footer container found:", footerContainer);
-
-//     fetch("../util/footer.html")
-//       .then((response) => {
-//         if (!response.ok) {
-//           throw new Error(`HTTP error! Status: ${response.status}`);
-//         }
-//         return response.text();
-//       })
-//       .then((data) => {
-//         footerContainer.innerHTML = data;
-//         console.log("Footer content loaded successfully");
-//       })
-//       .catch((error) => {
-//         console.error("Error fetching footer:", error);
-//       });
-//   } else {
-//     console.error("Footer container not found.");
-//   }
-// }
-
-/* Loading navbar content */
-// function loadNavbar() {
-//   const navbarContainer = document.getElementById("navbar");
-//   if (navbarContainer) {
-//     fetch("../util/navbar.html")
-//       .then((response) => response.text())
-//       .then((data) => {
-//         navbarContainer.innerHTML = data;
-//       })
-//       .catch((error) => {
-//         console.error("Error fetching navbar:", error);
-//       });
-//   } else {
-//     console.error("Navbar container not found.");
-//   }
-
-//   console.log("Navbar Container:", navbarContainer);
-// }
 
 /* Fetching and displaying username on navbar */
 function fetchUsername() {
@@ -91,3 +61,27 @@ function fetchUsername() {
     usernameElement.textContent = username;
   }
 }
+
+/* Create Course Card for Dashboard and Catalog */
+function createCourseCard(course) {
+  return card;
+}
+
+function viewCourse(courseId) {
+  window.location.href = `description.html?courseId=${courseId}`;
+}
+
+/* Loading Courses on Dashboard */
+async function loadUserCourses() {}
+
+/* Load Course Catalog */
+async function loadCourseCatalog() {}
+
+/* Load Course Description */
+async function loadCourseDescription() {}
+
+/* Save Course to My Courses */
+async function saveToMyCourses(courseId) {}
+
+/* Filter courses using Search Bar  */
+function filterCourses() {}
