@@ -1,69 +1,98 @@
 "use strict";
 
 import { registerUser } from "./index.js";
+import { Buffer } from "buffer";
 
-//Log in
-//Sign up
+window.Buffer = Buffer;
 
-/* Event listener for the authentication form submission during log in */
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
   console.log("DOM fully loaded and parsed");
+
+  // const template = document.getElementById("course-card-template");
+  // console.log("Template element:", template);
+
+  // const card = template.content.cloneNode(true);
+  // console.log("Cloned template content:", card);
 
   // Event listener for the Log In button click
   const loginButton = document.getElementById("loginButton");
-  loginButton.addEventListener("click", async (e) => {
-    e.preventDefault();
-    console.log("Log In button clicked");
+  if (loginButton) {
+    loginButton.addEventListener("click", async (e) => {
+      e.preventDefault();
+      console.log("Log In button clicked");
 
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    const errorMessageDiv = document.getElementById("errorMessage");
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const errorMessageDiv = document.getElementById("errorMessage");
 
-    errorMessageDiv.textContent = "";
-    errorMessageDiv.style.display = "none";
+      errorMessageDiv.textContent = "";
+      errorMessageDiv.style.display = "none";
 
-    try {
-      const user = await registerUser(email, password);
-      console.log("Registration successful:", user);
-      window.location.href = "dashboard.html"; // Redirect on success
-    } catch (error) {
-      console.error("Error during logging in:", error);
-      errorMessageDiv.textContent = error; // Display error message
-    }
-
-    // Redirecting to pages
-    if (window.location.pathname.endsWith("dashboard.html")) {
-      loadUserCourses();
-    }
-
-    if (window.location.pathname.endsWith("catalog.html")) {
-      loadCourseCatalog();
-    }
-
-    if (window.location.pathname.endsWith("description.html")) {
-      loadCourseDescription();
-      const searchBar = document.getElementById("search-bar");
-      if (searchBar) {
-        searchBar.addEventListener("input", filterCourses);
+      try {
+        const user = await registerUser(email, password);
+        console.log("Registration successful:", user);
+        window.location.href = "dashboard.html"; // Redirect on success
+      } catch (error) {
+        console.error("Error during logging in:", error);
+        errorMessageDiv.textContent = error; // Display error message
       }
-    }
-  });
+    });
+  }
+
+  // Fetching and displaying username on navbar
   fetchUsername();
+
+  // Redirecting to pages based on current URL
+  if (window.location.pathname.endsWith("dashboard.html")) {
+    loadUserCourses();
+  } else if (window.location.pathname.endsWith("catalog.html")) {
+    loadMockCourseCatalog();
+    console.log("Calling loadMockCourseCatalog function here");
+  } else if (window.location.pathname.endsWith("description.html")) {
+    loadCourseDescription();
+    const searchBar = document.getElementById("search-bar");
+    if (searchBar) {
+      searchBar.addEventListener("input", filterCourses);
+    } else {
+      console.error("Search bar element not found.");
+    }
+  }
 });
 
-/* Fetching and displaying username on navbar */
 function fetchUsername() {
   // Example placeholder username, logic here to fetch from database
   const username = "Lisa";
-
   const usernameElement = document.getElementById("username");
   if (usernameElement) {
     usernameElement.textContent = username;
   }
 }
 
-/* Create Course Card for Dashboard and Catalog */
 function createCourseCard(course) {
+  const template = document.getElementById("course-card-template");
+  if (!template) {
+    console.error("Template element not found");
+    return;
+  }
+  const card = template.content.cloneNode(true);
+
+  // Selecting elements inside the card
+  const img = card.querySelector(".card-img-top");
+  const title = card.querySelector(".card-title");
+  const description = card.querySelector(".card-text");
+  const link = card.querySelector(".btn.custom-btn");
+
+  img.src = course.image || "../images/defaultImage.jpg";
+  img.alt = course.title;
+  title.textContent = course.title;
+  description.textContent = course.description;
+  link.href = `description.html?courseId=${course.id}`;
+
+  card.querySelector(".col.course-card").dataset.courseId = course.id; // Example dataset usage
+
+  // Filtering courses using search bar
+  card.querySelector(".col.course-card").dataset.title = course.title.toLowerCase();
+
   return card;
 }
 
@@ -71,17 +100,59 @@ function viewCourse(courseId) {
   window.location.href = `description.html?courseId=${courseId}`;
 }
 
-/* Loading Courses on Dashboard */
-async function loadUserCourses() {}
+async function loadUserCourses() {
+  // Implementation here
+}
 
-/* Load Course Catalog */
-async function loadCourseCatalog() {}
+async function loadCourseCatalog() {
+  // Implementation here
+}
 
-/* Load Course Description */
-async function loadCourseDescription() {}
+async function loadCourseDescription() {
+  // Implementation here
+}
 
-/* Save Course to My Courses */
-async function saveToMyCourses(courseId) {}
+async function saveToMyCourses(courseId) {
+  // Implementation here
+}
 
-/* Filter courses using Search Bar  */
-function filterCourses() {}
+function filterCourses() {
+  // Implementation here
+}
+
+function loadMockCourseCatalog() {
+  console.log("Inside loadMockCourseCatalog function");
+  const mockData = {
+    courses: [
+      {
+        id: 1,
+        image: "https://via.placeholder.com/150",
+        title: "Course 1",
+        description: "This is the description for Course 1.",
+      },
+      {
+        id: 2,
+        image: "https://via.placeholder.com/150",
+        title: "Course 2",
+        description: "This is the description for Course 2.",
+      },
+      {
+        id: 3,
+        image: "https://via.placeholder.com/150",
+        title: "Course 3",
+        description: "This is the description for Course 3.",
+      },
+    ],
+  };
+  const catalogContainer = document.getElementById("catalog-section");
+  if (!catalogContainer) {
+    console.error("Catalog section not found");
+    return;
+  }
+  catalogContainer.innerHTML = "";
+
+  mockData.courses.forEach((course) => {
+    const courseCard = createCourseCard(course);
+    catalogContainer.appendChild(courseCard);
+  });
+}

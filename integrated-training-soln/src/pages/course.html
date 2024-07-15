@@ -4,21 +4,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Courses</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../style.css" />
   </head>
   <body>
-    <div class="col single-course">
-      <div class="card" style="width: 18rem">
-        <img src="../images/AboutImage.jpg" class="card-img-top" alt="..." />
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">
-            Some quick example text to build on the card title and make up the bulk of the card's content.
-          </p>
-          <a href="#" class="btn custom-btn">Continue</a>
+    <template id="course-card-template">
+      <div class="col">
+        <div class="card" style="width: 18rem">
+          <img src="../images/AboutImage.jpg" id="image" class="card-img-top" alt="..." />
+          <div class="card-body">
+            <h5 class="card-title" id="title"></h5>
+            <p class="card-text" id="description"></p>
+            <a href="#" class="btn custom-btn"></a>
+          </div>
         </div>
       </div>
-    </div>
-    <script src="main.js" defer></script>
+    </template>
+    <script src="../main.js" defer></script>
   </body>
 </html>
