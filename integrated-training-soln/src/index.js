@@ -40,19 +40,37 @@ async function addCity() {
 }
 
 export function registerUser(email, password) {
-  // createUserWithEmailAndPassword(auth, email, password)
-  //   .then((userCredential) => {
-  //     // Signed up
-  //     const user = userCredential.user;
-  //     console.log("User signed up:", user);
-  //     return user;
-  //   })
-  //   .catch((error) => {
-  //     const errorCode = error.code;
-  //     const errorMessage = error.message;
-  //     console.error("Registration error:", errorCode, errorMessage);
-  //     throw errorMessage;
-  //   });
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Signed up
+      const user = userCredential.user;
+      console.log("User signed up:", user);
+      return user;
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error("Registration error:", errorCode, errorMessage);
+      throw errorMessage;
+    });
+
+  // Simulate an error by always rejecting the promise
+  return new Promise((_, reject) => {
+    reject("Simulated error: Invalid email or password.");
+  });
+}
+
+export function loginUser(email, password) {
+  loginUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error("Login error:", errorCode, errorMessage);
+      throw errorMessage;
+    });
 
   // Simulate an error by always rejecting the promise
   return new Promise((_, reject) => {
