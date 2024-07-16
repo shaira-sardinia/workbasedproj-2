@@ -2,39 +2,37 @@
 
 import { registerUser } from "./index.js";
 import "./main.css";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 import logo from "./images/Logo.png";
 import about from "./images/AboutImage.jpg";
 import placeholder from "./images/placeholderImg.svg";
 
-window.Buffer = Buffer;
-
 document.addEventListener("DOMContentLoaded", async function () {
   console.log("DOM fully loaded and parsed");
 
-  const accentureLogo = new Image();
-  accentureLogo.src = logo;
-  const logoElement = document.getElementById('accentureLogo');
-  if (logoElement) {
-    console.log("Replacing logoImage");
-    logoElement.src = accentureLogo;
-  }
+  // const accentureLogo = new Image();
+  // accentureLogo.src = logo;
+  // const logoElement = document.getElementById("accentureLogo");
+  // if (logoElement) {
+  //   console.log("Replacing logoImage");
+  //   logoElement.src = accentureLogo;
+  // }
 
-  const aboutImage = new Image();
-  aboutImage.src = about;
-  const aboutElement = document.getElementById('aboutImage');
-  if (aboutElement) {
-    console.log("Replacing aboutImage");
-    aboutElement.src = aboutImage;
-  }
+  // const aboutImage = new Image();
+  // aboutImage.src = about;
+  // const aboutElement = document.getElementById("aboutImage");
+  // if (aboutElement) {
+  //   console.log("Replacing aboutImage");
+  //   aboutElement.src = aboutImage;
+  // }
 
-  const placeholderImage = new Image();
-  placeholderImage.src = placeholder;
-  const placeholderElement = document.getElementById('placeholderImage');
-  if (placeholderElement) {
-    console.log("Replacing placeholderImage");
-    placeholderElement.src = placeholderImage;
-  }
+  // const placeholderImage = new Image();
+  // placeholderImage.src = placeholder;
+  // const placeholderElement = document.getElementById("placeholderImage");
+  // if (placeholderElement) {
+  //   console.log("Replacing placeholderImage");
+  //   placeholderElement.src = placeholderImage;
+  // }
 
   // Event listener for the Log In button click
   const loginButton = document.getElementById("loginButton");

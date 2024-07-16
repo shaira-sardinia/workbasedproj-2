@@ -225,6 +225,7 @@ a:hover {
   justify-content: flex-end;
   margin: 15px;
   padding-right: 16px;
+  text-decoration: none;
 }
 
 .about-page {
@@ -262,6 +263,7 @@ a:hover {
 
 .footer-links li a {
   color: #ffffff;
+  text-decoration: none;
 }
 
 .title {
@@ -286,6 +288,7 @@ a:hover {
 
 .header-link {
   color: #000000 !important;
+  text-decoration: none;
 }
 
 /* Dashboard styling */
@@ -298,9 +301,6 @@ a:hover {
 
 .progress-bar {
   padding-right: 10vh;
-}
-
-.single-course {
 }
 
 .courses-section {
