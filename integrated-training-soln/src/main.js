@@ -1,40 +1,38 @@
 "use strict";
 
-import { registerUser } from "./index.js";
+import { loginUser, registerUser } from "./index.js";
 import "./main.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import logo from "./images/Logo.png";
-import about from "./images/AboutImage.jpg";
-import placeholder from "./images/placeholderImg.svg";
 
 document.addEventListener("DOMContentLoaded", async function () {
   console.log("DOM fully loaded and parsed");
 
-  // const accentureLogo = new Image();
-  // accentureLogo.src = logo;
-  // const logoElement = document.getElementById("accentureLogo");
-  // if (logoElement) {
-  //   console.log("Replacing logoImage");
-  //   logoElement.src = accentureLogo;
-  // }
+  // Event listener for the Sign Up button click
+  const signUpButton = document.getElementById("signUpButton");
+  if (signUpButton) {
+    signUpButton.addEventListener("click", async (e) => {
+      e.preventDefault();
+      console.log("Sign Up button clicked");
 
-  // const aboutImage = new Image();
-  // aboutImage.src = about;
-  // const aboutElement = document.getElementById("aboutImage");
-  // if (aboutElement) {
-  //   console.log("Replacing aboutImage");
-  //   aboutElement.src = aboutImage;
-  // }
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const errorMessageDiv = document.getElementById("errorMessage");
 
-  // const placeholderImage = new Image();
-  // placeholderImage.src = placeholder;
-  // const placeholderElement = document.getElementById("placeholderImage");
-  // if (placeholderElement) {
-  //   console.log("Replacing placeholderImage");
-  //   placeholderElement.src = placeholderImage;
-  // }
+      errorMessageDiv.textContent = "";
+      errorMessageDiv.style.display = "none";
 
-  // Event listener for the Log In button click
+      try {
+        const user = await registerUser(email, password);
+        console.log("Registration successful:", user);
+        window.location.href = "dashboard.html"; // Redirect on success
+      } catch (error) {
+        console.error("Error during registration:", error);
+        errorMessageDiv.textContent = error; // Display error message
+      }
+    });
+  }
+
+  // Event listener for the Sign Up button click
   const loginButton = document.getElementById("loginButton");
   if (loginButton) {
     loginButton.addEventListener("click", async (e) => {
@@ -49,11 +47,11 @@ document.addEventListener("DOMContentLoaded", async function () {
       errorMessageDiv.style.display = "none";
 
       try {
-        const user = await registerUser(email, password);
-        console.log("Registration successful:", user);
+        const user = await loginUser(email, password);
+        console.log("Login successful:", user);
         window.location.href = "dashboard.html"; // Redirect on success
       } catch (error) {
-        console.error("Error during logging in:", error);
+        console.error("Error during login:", error);
         errorMessageDiv.textContent = error; // Display error message
       }
     });

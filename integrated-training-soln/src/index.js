@@ -8,7 +8,7 @@
 // Import Firebase SDK modules
 import { initializeApp } from "firebase/app";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -61,9 +61,12 @@ export function registerUser(email, password) {
 }
 
 export function loginUser(email, password) {
-  loginUserWithEmailAndPassword(auth, email, password)
+  signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-
+      // Logged in
+      const user = userCredential.user;
+      console.log("User logged in:", user);
+      return user;
     })
     .catch((error) => {
       const errorCode = error.code;
