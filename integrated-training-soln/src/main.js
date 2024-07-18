@@ -29,14 +29,10 @@ const mockData = {
 
 document.addEventListener("DOMContentLoaded", async function () {
   console.log("DOM fully loaded and parsed");
-
-  // Event listener for the Sign Up button click
-  const signUpButton = document.getElementById("signUpButton");
-  if (signUpButton) {
-    signUpButton.addEventListener("click", async (e) => {
+  
+  function handleFormSubmission(action) {
+    return async function (e) {
       e.preventDefault();
-      console.log("Sign Up button clicked");
-
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
       const errorMessageDiv = document.getElementById("errorMessage");
@@ -45,39 +41,33 @@ document.addEventListener("DOMContentLoaded", async function () {
       errorMessageDiv.style.display = "none";
 
       try {
-        const user = await registerUser(email, password);
-        console.log("Registration successful:", user);
+        let user;
+        if (action === 'register') {
+          user = await registerUser(email, password);
+          console.log("Registration successful:", user);
+        } else if (action === 'login') {
+          user = await loginUser(email, password);
+          console.log("Login successful:", user);
+        }
         window.location.href = "dashboard.html"; // Redirect on success
       } catch (error) {
-        console.error("Error during registration:", error);
+        console.error(`Error during ${action}:`, error);
         errorMessageDiv.textContent = error; // Display error message
+        errorMessageDiv.style.display = "block";
       }
-    });
+    }
   }
 
-  // Event listener for the Sign Up button click
+  const signUpButton = document.getElementById("signUpButton");
+  if (signUpButton) {
+    console.log("Attaching event listener to Sign Up button");
+    signUpButton.addEventListener("click", handleFormSubmission('register'));
+  }
+
   const loginButton = document.getElementById("loginButton");
   if (loginButton) {
-    loginButton.addEventListener("click", async (e) => {
-      e.preventDefault();
-      console.log("Log In button clicked");
-
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      const errorMessageDiv = document.getElementById("errorMessage");
-
-      errorMessageDiv.textContent = "";
-      errorMessageDiv.style.display = "none";
-
-      try {
-        const user = await loginUser(email, password);
-        console.log("Login successful:", user);
-        window.location.href = "dashboard.html"; // Redirect on success
-      } catch (error) {
-        console.error("Error during login:", error);
-        errorMessageDiv.textContent = error; // Display error message
-      }
-    });
+    console.log("Attaching event listener to Log In button");
+    loginButton.addEventListener("click", handleFormSubmission('login'));
   }
 
   // Fetching and displaying username on navbar
