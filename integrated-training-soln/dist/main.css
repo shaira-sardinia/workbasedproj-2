@@ -220,12 +220,13 @@ a:hover {
 }
 
 /* About page styling */
-.about-page-header {
+.about-page-header a {
   display: flex;
   justify-content: flex-end;
   margin: 15px;
   padding-right: 16px;
-  text-decoration: none;
+  text-decoration: none !important;
+  color: #000000;
 }
 
 .about-page {
