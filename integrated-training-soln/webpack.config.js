@@ -15,6 +15,7 @@ const config = {
     path: path.resolve(__dirname, "dist"),
     filename: "main.js",
     assetModuleFilename: "images/[name][ext]",
+    publicPath: "/",
   },
   devServer: {
     open: true,
@@ -73,7 +74,7 @@ const config = {
         test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
         type: "asset/resource",
         generator: {
-          filename: "images/[name][ext]", // Maintain original file names and place them in 'images' folder
+          filename: "images/[name][ext]",
         },
       },
 

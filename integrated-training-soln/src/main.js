@@ -3,6 +3,9 @@
 import { loginUser, registerUser } from "./index.js";
 import "./main.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import logo from "./images/Logo.png";
+import about from "./images/AboutImage.jpg";
+import placeholder from "./images/placeholderImg.svg";
 
 const mockData = {
   courses: [
@@ -29,7 +32,7 @@ const mockData = {
 
 document.addEventListener("DOMContentLoaded", async function () {
   console.log("DOM fully loaded and parsed");
-  
+
   function handleFormSubmission(action) {
     return async function (e) {
       e.preventDefault();
@@ -42,10 +45,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 
       try {
         let user;
-        if (action === 'register') {
+        if (action === "register") {
           user = await registerUser(email, password);
           console.log("Registration successful:", user);
-        } else if (action === 'login') {
+        } else if (action === "login") {
           user = await loginUser(email, password);
           console.log("Login successful:", user);
         }
@@ -55,19 +58,19 @@ document.addEventListener("DOMContentLoaded", async function () {
         errorMessageDiv.textContent = error; // Display error message
         errorMessageDiv.style.display = "block";
       }
-    }
+    };
   }
 
   const signUpButton = document.getElementById("signUpButton");
   if (signUpButton) {
     console.log("Attaching event listener to Sign Up button");
-    signUpButton.addEventListener("click", handleFormSubmission('register'));
+    signUpButton.addEventListener("click", handleFormSubmission("register"));
   }
 
   const loginButton = document.getElementById("loginButton");
   if (loginButton) {
     console.log("Attaching event listener to Log In button");
-    loginButton.addEventListener("click", handleFormSubmission('login'));
+    loginButton.addEventListener("click", handleFormSubmission("login"));
   }
 
   // Fetching and displaying username on navbar
