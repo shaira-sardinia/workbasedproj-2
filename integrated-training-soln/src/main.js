@@ -52,7 +52,6 @@ document.addEventListener("DOMContentLoaded", async function () {
           user = await loginUser(email, password);
           console.log("Login successful:", user);
         }
-        window.location.href = "dashboard.html"; // Redirect on success
       } catch (error) {
         console.error(`Error during ${action}:`, error);
         errorMessageDiv.textContent = error; // Display error message

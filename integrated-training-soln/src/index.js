@@ -8,7 +8,7 @@
 // Import Firebase SDK modules
 import { initializeApp } from "firebase/app";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -53,11 +53,6 @@ export function registerUser(email, password) {
       console.error("Registration error:", errorCode, errorMessage);
       throw errorMessage;
     });
-
-  // Simulate an error by always rejecting the promise
-  return new Promise((_, reject) => {
-    reject("Simulated error: Invalid email or password.");
-  });
 }
 
 export function loginUser(email, password) {
@@ -75,8 +70,19 @@ export function loginUser(email, password) {
       throw errorMessage;
     });
 
-  // Simulate an error by always rejecting the promise
-  return new Promise((_, reject) => {
-    reject("Simulated error: Invalid email or password.");
-  });
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const uid = user.uid;
+      console.log("User authenticated:", uid, "\nRedirecting");
+      setTimeout(() => {
+        window.location.href = "dashboard.html";
+      }, 10000);
+    }
+    else {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error("Login error:", errorCode, errorMessage);
+      throw errorMessage;
+    }
+  })
 }
