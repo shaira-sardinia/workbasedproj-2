@@ -78,9 +78,10 @@ document.addEventListener("DOMContentLoaded", async function () {
   // Redirecting to pages based on current URL
   if (window.location.pathname.endsWith("dashboard.html")) {
     loadUserCourses();
+    console.log("Calling loadUserCourses function here");
   } else if (window.location.pathname.endsWith("catalog.html")) {
-    loadMockCourseCatalog();
-    console.log("Calling loadMockCourseCatalog function here");
+    loadCourseCatalog();
+    console.log("Calling loadCourseCatalog function here");
   } else if (window.location.pathname.endsWith("description.html")) {
     loadCourseDescription();
     const searchBar = document.getElementById("search-bar");
@@ -128,16 +129,17 @@ function createCourseCard(course) {
 }
 
 async function viewCourse(courseId) {
+  //   console.log("Viewing course with ID:", courseId);
+  //   console.log("mockData:", mockData);
+
   //   try {
   //     const courseDetails = await fetchCourseDetails(courseId);
   //     const url = `description.html?courseId=${courseDetails.id}`;
   //     window.location.href = url;
   //   } catch (error) {
-  //     console.error("Error fetching course details:", error);
+  //     console.error(error);
   //   }
-  console.log("Viewing course with ID:", courseId);
-  console.log("mockData:", mockData);
-
+  // }
   try {
     const courseDetails = await fetchCourseDetails(courseId);
     const url = `description.html?courseId=${courseDetails.id}`;
@@ -147,17 +149,17 @@ async function viewCourse(courseId) {
   }
 }
 
-async function loadCourseDescription() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const courseId = urlParams.get("courseId");
+// async function loadCourseDescription() {
+//   const urlParams = new URLSearchParams(window.location.search);
+//   const courseId = urlParams.get("courseId");
 
-  try {
-    const course = await fetchCourseDetails(courseId); // API call here
-    renderCourseDetails(course);
-  } catch (error) {
-    console.error("Error loading course description:", error);
-  }
-}
+//   try {
+//     const course = await fetchCourseDetails(courseId); // API call here
+//     renderCourseDetails(course);
+//   } catch (error) {
+//     console.error("Error loading course description:", error);
+//   }
+// }
 
 function renderCourseDetails(course) {
   const courseNameElement = document.querySelector(".header-text");
@@ -185,7 +187,22 @@ async function loadUserCourses() {
 }
 
 async function loadCourseCatalog() {
-  // Implementation here
+  console.log("Inside course catalog");
+  try {
+    const courses = await fetchCourses();
+    const catalogContainer = document.getElementById("catalog-section");
+    if (!catalogContainer) {
+      console.error("Catalog section not found");
+      return;
+    }
+    catalogContainer.innerHTML = "";
+    courses.forEach((course) => {
+      const courseCard = createCourseCard(course);
+      catalogContainer.appendChild(courseCard);
+    });
+  } catch (error) {
+    console.error("Error loading course catalog:", error);
+  }
 }
 
 async function saveToMyCourses(courseId) {
@@ -196,25 +213,25 @@ function filterCourses() {
   // Implementation here
 }
 
-function loadMockCourseCatalog() {
-  console.log("Inside loadMockCourseCatalog function");
-  const catalogContainer = document.getElementById("catalog-section");
-  if (!catalogContainer) {
-    console.error("Catalog section not found");
-    return;
-  }
-  catalogContainer.innerHTML = "";
+// function loadMockCourseCatalog() {
+//   console.log("Inside loadMockCourseCatalog function");
+//   const catalogContainer = document.getElementById("catalog-section");
+//   if (!catalogContainer) {
+//     console.error("Catalog section not found");
+//     return;
+//   }
+//   catalogContainer.innerHTML = "";
 
-  mockData.courses.forEach((course) => {
-    const courseCard = createCourseCard(course);
-    catalogContainer.appendChild(courseCard);
-  });
-}
+//   mockData.courses.forEach((course) => {
+//     const courseCard = createCourseCard(course);
+//     catalogContainer.appendChild(courseCard);
+//   });
+// }
 
 /* API calls  */
 async function fetchCourses() {
   try {
-    const response = await fetch("https://api.example.com/courses"); // Replace with your actual API endpoint
+    const response = await fetch("https://paas-api.pluralsight.com/graphql");
     const courses = await response.json();
 
     const container = document.getElementById("courses-container");
@@ -229,27 +246,41 @@ async function fetchCourses() {
 }
 
 async function fetchCourseDetails(courseId) {
-  // // Replace with  API endpoint and  API call
-  // const apiUrl = `https://api.example.com/courses/${courseId}`;
-  // const response = await fetch(apiUrl);
-  // if (!response.ok) {
-  //   throw new Error(`HTTP error! Status: ${response.status}`);
-  // }
-  // return await response.json();
   console.log(`Fetching course details for courseId: ${courseId}`);
-  console.log("mockData:", mockData);
-
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const course = mockData.courses.find((course) => course.id === courseId);
-      if (!course) {
-        const errorMessage = `Course details not found for courseId: ${courseId}`;
-        console.error(errorMessage);
-        reject(new Error(errorMessage));
-      } else {
-        console.log(`Course details found for courseId ${courseId}:`, course);
-        resolve(course);
+  try {
+    const response = await fetch(
+      `https://us-central1-accenture-training-website.cloudfunctions.net/fetchCourseDetails?courseId=${courseId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
-    }, 5000); // Simulate 1 second delay (remove in real API implementation)
-  });
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching course details:", error);
+    throw error;
+  }
 }
+
+// console.log("mockData:", mockData);
+
+// return new Promise((resolve, reject) => {
+//   setTimeout(() => {
+//     const course = mockData.courses.find((course) => course.id === courseId);
+//     if (!course) {
+//       const errorMessage = `Course details not found for courseId: ${courseId}`;
+//       console.error(errorMessage);
+//       reject(new Error(errorMessage));
+//     } else {
+//       console.log(`Course details found for courseId ${courseId}:`, course);
+//       resolve(course);
+//     }
+//   }, 5000); // Simulate 1 second delay (remove in real API implementation)
+// });
