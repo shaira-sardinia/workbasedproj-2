@@ -8,7 +8,7 @@
 // Import Firebase SDK modules
 import { initializeApp } from "firebase/app";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, setPersistence, browserSessionPersistence } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -39,6 +39,19 @@ async function addCity() {
   }
 }
 
+export function getCurrentUser() {
+  const currentUser = auth.currentUser;
+  if (currentUser) {
+    const uid = currentUser.uid;
+    const email = currentUser.email;
+    console.log("Current user:", uid, "\nEmail:", email);
+    return email;
+  } else {
+    console.log("No user currently logged in");
+    return "No user";
+  }
+}
+
 export function registerUser(email, password) {
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
@@ -56,14 +69,23 @@ export function registerUser(email, password) {
 }
 
 export function loginUser(email, password) {
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Logged in
-      const user = userCredential.user;
-      console.log("User logged in:", user);
-      return user;
+  setPersistence(auth, browserSessionPersistence)
+    .then(() => {
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Logged in
+          const user = userCredential.user;
+          console.log("User logged in:", user);
+          return user;
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.error("Login error:", errorCode, errorMessage);
+          throw errorMessage;
+        });
     })
-    .catch((error) => {
+    .catch(() => {
       const errorCode = error.code;
       const errorMessage = error.message;
       console.error("Login error:", errorCode, errorMessage);
@@ -76,13 +98,22 @@ export function loginUser(email, password) {
       console.log("User authenticated:", uid, "\nRedirecting");
       setTimeout(() => {
         window.location.href = "dashboard.html";
-      }, 10000);
+      }, 2500);
     }
     else {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.error("Login error:", errorCode, errorMessage);
-      throw errorMessage;
+      console.error("onAuthStateChanged error");
     }
   })
+}
+
+export function signOutUser() {
+  signOut(auth)
+    .then(() => {
+      console.log("Sign out successful");
+    }).catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error("Sign out error:", errorCode, errorMessage);
+      throw errorMessage;
+    });
 }
