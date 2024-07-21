@@ -25,9 +25,6 @@ async function fetchCourseDetailsFromAPI(courseId, apiKey) {
     `,
   };
 
-  console.log("API URL:", apiUrl);
-  console.log("Using API Key:", apiKey);
-
   const response = await fetch(apiUrl, {
     method: "POST",
     mode: "no-cors",
