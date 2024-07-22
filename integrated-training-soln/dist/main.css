@@ -197,7 +197,7 @@ a:hover {
 }
 
 .header-text {
-  font-size: 48px;
+  font-size: 52px;
   font-weight: 400;
   color: #8a38f5;
   padding-bottom: 12px;
@@ -352,7 +352,7 @@ a:hover {
 }
 
 .desc-page-image {
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
 }
 
 @charset "UTF-8";/*!

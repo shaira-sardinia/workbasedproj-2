@@ -5,6 +5,8 @@ import "./main.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import logo from "./images/Logo.png";
 import about from "./images/AboutImage.jpg";
+import course from "./images/CourseImage.jpg";
+import description from "./images/DescriptionImage.jpg";
 import placeholder from "./images/placeholderImg.svg";
 
 const mockData = {

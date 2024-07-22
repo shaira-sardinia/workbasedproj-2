@@ -66,64 +66,64 @@ export const fetchCourseDetails = onRequest(async (req, res) => {
   });
 });
 
-// export const fetchCourses = onRequest(async (req, res) => {
-//   corsHandler(req, res, async () => {
-//     const apiKey = functions.config().pluralsight.fetch_courses_key;
-
-//     try {
-//       const response = await fetch("https://paas-api.pluralsight.com/graphql", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `Bearer ${apiKey}`,
-//         },
-//         body: JSON.stringify({
-//           query: `
-//           query {
-//             courseCatalog {
-//               nodes {
-//                 id
-//                 title
-//                 description
-//                 image
-//               }
-//             }
-//           }
-//           `,
-//         }),
-//       });
-
-//       if (!response.ok) {
-//         throw new Error(`HTTP error! Status: ${response.status}`);
-//       }
-
-//       const data = await response.json();
-//       res.status(200).json(data);
-//     } catch (error) {
-//       console.error("Error fetching courses:", error);
-//       res.status(500).send("Error fetching courses");
-//     }
-//   });
-// });
-
-export const fetchCourses = onRequest((req, res) => {
+export const fetchCourses = onRequest(async (req, res) => {
   corsHandler(req, res, async () => {
-    if (req.method === "OPTIONS") {
-      // Preflight request
-      res.set("Access-Control-Allow-Origin", "*");
-      res.set("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
-      res.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
-      return res.status(204).send("");
-    }
-
-    const apiKey = functions.config().function1.apikey;
+    const apiKey = functions.config().pluralsight.fetch_courses_key;
 
     try {
-      const courses = await fetchCoursesFromAPI(apiKey);
-      res.status(200).json(courses);
+      const response = await fetch("https://paas-api.pluralsight.com/graphql", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          query: `
+          query {
+            courseCatalog {
+              nodes {
+                id
+                title
+                description
+                image
+              }
+            }
+          }
+          `,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      res.status(200).json(data);
     } catch (error) {
       console.error("Error fetching courses:", error);
       res.status(500).send("Error fetching courses");
     }
   });
 });
+
+// export const fetchCourses = onRequest((req, res) => {
+//   corsHandler(req, res, async () => {
+//     if (req.method === "OPTIONS") {
+//       // Preflight request
+//       res.set("Access-Control-Allow-Origin", "*");
+//       res.set("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+//       res.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+//       return res.status(204).send("");
+//     }
+
+//     const apiKey = functions.config().function1.apikey;
+
+//     try {
+//       const courses = await fetchCoursesFromAPI(apiKey);
+//       res.status(200).json(courses);
+//     } catch (error) {
+//       console.error("Error fetching courses:", error);
+//       res.status(500).send("Error fetching courses");
+//     }
+//   });
+// });
