@@ -1,6 +1,13 @@
-import * as functions from "firebase-functions";
+import { onRequest } from "firebase-functions/v2/https";
 import fetch from "node-fetch";
-// const corsHandler = cors({ origin: true });
+import functions from "firebase-functions";
+
+// Custom CORS headers
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
 
 // Function to fetch course details from PluralSight API
 async function fetchCourseDetailsFromAPI(courseId, apiKey) {
@@ -8,26 +15,21 @@ async function fetchCourseDetailsFromAPI(courseId, apiKey) {
 
   const query = {
     query: `
-      query {
-        courseCatalog(first: 3) {
-            nodes {
-            id
-            idNum
-            slug
-            url
-            title
-            level
-            description
-            shortDescription
-            }
-  }
-}
+    query {
+      channelContent {
+        nodes {
+          id
+          title
+          description
+          image
+        }
+      }
+    }
     `,
   };
 
   const response = await fetch(apiUrl, {
     method: "POST",
-    mode: "no-cors",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${apiKey}`,
@@ -35,38 +37,83 @@ async function fetchCourseDetailsFromAPI(courseId, apiKey) {
     body: JSON.stringify(query),
   });
 
-  console.log("Response status:", response.status);
-
   if (!response.ok) {
-    const errorText = await response.text();
-    console.error("Error response text:", errorText);
     throw new Error(`HTTP error! Status: ${response.status}`);
   }
 
-  const responseData = await response.json();
-  console.log("Response data:", responseData);
-  return responseData;
+  return await response.json();
 }
 
-// HTTP Cloud Function
-export const fetchCourseDetails = functions.https.onRequest(async (req, res) => {
+// HTTP Cloud Function to fetch course details
+export const fetchCourseDetails = onRequest(async (req, res) => {
+  if (req.method === "OPTIONS") {
+    res.set(corsHeaders);
+    return res.status(204).send("");
+  }
+
   const courseId = req.query.courseId;
   if (!courseId) {
+    res.set(corsHeaders);
     return res.status(400).send("Course ID is required");
   }
 
-  // Access the API key from Firebase environment configuration
-  const apiKey = functions.config().pluralsight.api_key;
-
-  response.set("Access-Control-Allow-Origin", "*");
-  response.set("Access-Control-Allow-Methods", "GET, POST");
-  response.set("Access-Control-Allow-Headers", "Content-Type");
+  // Fetch API key from environment configuration
+  const apiKeyForFunction1 = functions.config().function1.apikey;
 
   try {
-    const courseDetails = await fetchCourseDetailsFromAPI(courseId, apiKey);
+    const courseDetails = await fetchCourseDetailsFromAPI(courseId, apiKeyForFunction1);
+    res.set(corsHeaders);
     res.status(200).json(courseDetails);
   } catch (error) {
     console.error("Error fetching course details:", error);
+    res.set(corsHeaders);
     res.status(500).send("Error fetching course details");
+  }
+});
+
+// HTTP Cloud Function to fetch courses
+export const fetchCourses = onRequest(async (req, res) => {
+  if (req.method === "OPTIONS") {
+    res.set(corsHeaders);
+    return res.status(204).send("");
+  }
+
+  // Fetch API key from environment configuration
+  const apiKeyForFunction2 = functions.config().function2.apikey;
+
+  try {
+    const response = await fetch("https://paas-api.pluralsight.com/graphql", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKeyForFunction2}`,
+      },
+      body: JSON.stringify({
+        query: `
+        query {
+          courseCatalog {
+            nodes {
+              id
+              title
+              description
+              image
+            }
+          }
+        }
+        `,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    res.set(corsHeaders);
+    res.status(200).json(data);
+  } catch (error) {
+    console.error("Error fetching courses:", error);
+    res.set(corsHeaders);
+    res.status(500).send("Error fetching courses");
   }
 });

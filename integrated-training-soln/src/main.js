@@ -1,6 +1,6 @@
 "use strict";
 
-import { loginUser, registerUser, signOutUser, getCurrentUser } from "./index.js";
+import { loginUser, registerUser } from "./index.js";
 import "./main.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import logo from "./images/Logo.png";
@@ -51,7 +51,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         } else if (action === "login") {
           user = await loginUser(email, password);
           console.log("Login successful:", user);
-          getCurrentUser();
         }
       } catch (error) {
         console.error(`Error during ${action}:`, error);
@@ -76,9 +75,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   // Fetching and displaying username on navbar
   fetchUsername();
 
-  // Sign out user on window close
-  //window.onbeforeunload = signOutUser();
-
   // Redirecting to pages based on current URL
   if (window.location.pathname.endsWith("dashboard.html")) {
     loadUserCourses();
@@ -99,7 +95,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 function fetchUsername() {
   // Example placeholder username, logic here to fetch from database
-  const username = getCurrentUser();
+  const username = "Lisa";
   const usernameElement = document.getElementById("username");
   if (usernameElement) {
     usernameElement.textContent = username;
