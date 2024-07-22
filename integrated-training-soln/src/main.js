@@ -129,17 +129,6 @@ function createCourseCard(course) {
 }
 
 async function viewCourse(courseId) {
-  //   console.log("Viewing course with ID:", courseId);
-  //   console.log("mockData:", mockData);
-
-  //   try {
-  //     const courseDetails = await fetchCourseDetails(courseId);
-  //     const url = `description.html?courseId=${courseDetails.id}`;
-  //     window.location.href = url;
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
   try {
     const courseDetails = await fetchCourseDetails(courseId);
     const url = `description.html?courseId=${courseDetails.id}`;
@@ -231,7 +220,16 @@ function filterCourses() {
 /* API calls  */
 async function fetchCourses() {
   try {
-    const response = await fetch("https://paas-api.pluralsight.com/graphql");
+    const response = await fetch("https://us-central1-accenture-training-website.cloudfunctions.net/fetchCourses", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
     const courses = await response.json();
 
     const container = document.getElementById("courses-container");

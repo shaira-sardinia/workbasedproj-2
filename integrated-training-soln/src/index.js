@@ -8,7 +8,15 @@
 // Import Firebase SDK modules
 import { initializeApp } from "firebase/app";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, setPersistence, browserSessionPersistence } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+  setPersistence,
+  browserSessionPersistence,
+} from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -75,13 +83,14 @@ export function loginUser(email, password) {
         .then((userCredential) => {
           // Logged in
           const user = userCredential.user;
-          console.log("User logged in:", user);
+          console.log("User logged in:", user.uid);
           return user;
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
           console.error("Login error:", errorCode, errorMessage);
+
           throw errorMessage;
         });
     })
@@ -99,18 +108,18 @@ export function loginUser(email, password) {
       setTimeout(() => {
         window.location.href = "dashboard.html";
       }, 2500);
-    }
-    else {
+    } else {
       console.error("onAuthStateChanged error");
     }
-  })
+  });
 }
 
 export function signOutUser() {
   signOut(auth)
     .then(() => {
       console.log("Sign out successful");
-    }).catch((error) => {
+    })
+    .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
       console.error("Sign out error:", errorCode, errorMessage);
